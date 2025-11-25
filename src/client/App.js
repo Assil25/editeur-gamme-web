@@ -1,23 +1,39 @@
-import React, { Component } from 'react';
-import './app.css';
-import ReactImage from './react.png';
+import React, { useState } from 'react';
+import GestionGamme from './GestionGamme';
+import GestionOperation from './GestionOperation';
+import GestionSequence from './GestionSequence';
 
-export default class App extends Component {
-  state = { username: null };
+function App() {
+  const [selectedGammeId, setSelectedGammeId] = useState(null);
+  const [selectedOperationId, setSelectedOperationId] = useState(null);
+  const [selectedSequenceId, setSelectedSequenceId] = useState(null);
+  return (
+    <div style={{ padding: '20px' }}>
+      <h1>Éditeur de Gammes</h1>
 
-  componentDidMount() {
-    fetch('/api/getUsername')
-      .then(res => res.json())
-      .then(user => this.setState({ username: user.username }));
-  }
+      <div style={{ display: 'flex', gap: '20px' }}>
+        <div style={{ flex: 1 }}>
+          <GestionGamme onSelectGamme={id => {
+            setSelectedGammeId(id);
+            setSelectedOperationId(null);
+          }} />
+        </div>
 
-  render() {
-    const { username } = this.state;
-    return (
-      <div>
-        {username ? <h1>{`Hello ${username}`}</h1> : <h1>Loading.. please wait!</h1>}
-        <img src={ReactImage} alt="react" />
+        <div style={{ flex: 2 }}>
+          <GestionOperation
+            gammeId={selectedGammeId}
+            onSelectOperation={id => setSelectedOperationId(id)}
+          />
+        </div>
       </div>
-    );
-  }
+
+      <div style={{ marginTop: '20px' }}>
+        <GestionSequence 
+          operationId={selectedOperationId} 
+          onSelectSequence={id => setSelectedSequenceId(id)} />
+      </div>
+    </div>
+  );
 }
+
+export default App;

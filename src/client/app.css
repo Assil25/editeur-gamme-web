@@ -1,8 +1,19 @@
-h1 {
-  color: green;
+ul {
+  list-style: none; /* enlève les puces */
+  padding: 0;
 }
 
-body {
+li {
+  cursor: pointer; /* montre que c'est cliquable */
+  padding: 5px 10px;
+  margin: 5px auto;
+  border: 1px solid #ccc;
+  width: 200px;
   text-align: center;
-  margin: auto;
+  border-radius: 5px;
+  transition: 0.3s;
+}
+
+li:hover {
+  background-color: #e0ffe0; /* survol pour indiquer qu'on peut cliquer */
 }
