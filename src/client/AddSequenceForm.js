@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-
+import './FormCommon.css';
 function AddSequenceForm({ CycleId, onSequenceAdd }) {
   const [TypeId, setTypeId] = useState('');
   const [SeqName, setSeqName] = useState('');
@@ -47,7 +47,7 @@ function AddSequenceForm({ CycleId, onSequenceAdd }) {
   };
 
   return (
-    <form onSubmit={handleSubmit} style={{ marginBottom: '20px' }}>
+    <form onSubmit={handleSubmit} className="common-form">
       <h3>➕ Ajouter une séquence</h3>
         
       <select

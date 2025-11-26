@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import TableWithSlider from './TableWithSlider/TableWithSlider';
 
-// Composant GammeList
 function GammeList({ onSelectGamme }) {
   const [gammes, setGammes] = useState([]);
 
@@ -11,31 +11,24 @@ function GammeList({ onSelectGamme }) {
       .catch(err => console.error(err));
   }, []);
 
+  const columns = [
+    { key: 'Id', label: 'Id' },
+    { key: 'ManufactRoutingCode', label: 'ManufactRoutingCode' },
+    { key: 'ManufactRoutingVersion', label: 'ManufactRoutingVersion' },
+    { key: 'PartReference', label: 'PartReference' },
+    { key: 'PartDescription', label: 'PartDescription' },
+  ];
+
   return (
     <div>
       <h2>Gammes</h2>
-      <table border="1" style={{ margin: 'auto', borderCollapse: 'collapse' }}>
-        <thead>
-          <tr>
-            <th>Id</th>
-            <th>ManufactRoutingCode</th>
-            <th>ManufactRoutingVersion</th>
-            <th>PartReference</th>
-            <th>PartDescription</th>
-          </tr>
-        </thead>
-        <tbody>
-          {gammes.map(g => (
-            <tr key={g.Id} onClick={() => onSelectGamme(g.Id)} style={{ cursor: 'pointer' }}>
-              <td>{g.Id}</td>
-              <td>{g.ManufactRoutingCode}</td>
-              <td>{g.ManufactRoutingVersion}</td>
-              <td>{g.PartReference}</td>
-              <td>{g.PartDescription}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <TableWithSlider
+        data={gammes}
+        columns={columns}
+        height="40vh"  // hauteur du tableau (40% de la fenêtre)
+        width="50vw"   // largeur du tableau (80% de la fenêtre)
+        onSelect={(g) => onSelectGamme(g.Id)}
+      />
     </div>
   );
 }

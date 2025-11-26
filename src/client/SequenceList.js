@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import TableWithSlider from './TableWithSlider/TableWithSlider';
 import SequenceParametresList from './SequenceParametresList';
 
 function SequenceList({ operationId }) {
@@ -14,35 +15,25 @@ function SequenceList({ operationId }) {
       .catch(err => console.error(err));
   }, [operationId]);
 
+  const columns = [
+    { key: 'Id', label: 'Id' },
+    { key: 'CycleId', label: 'CycleId' },
+    { key: 'TypeId', label: 'TypeId' },
+    { key: 'SeqName', label: 'SeqName' },
+    { key: 'SeqNr', label: 'SeqNr' },
+  ];
+
   return (
     <div>
       <h2>Séquences</h2>
-      <table border="1" style={{ margin: 'auto', borderCollapse: 'collapse' }}>
-        <thead>
-          <tr>
-            <th>Id</th>
-            <th>CycleId</th>
-            <th>TypeId</th>
-            <th>SeqName</th>
-            <th>SeqNr</th>
-          </tr>
-        </thead>
-        <tbody>
-          {sequences.map(seq => (
-            <tr
-              key={seq.Id}
-              onClick={() => setSelectedSequence(seq)}
-              style={{ cursor: 'pointer', backgroundColor: selectedSequence?.Id === seq.Id ? '#e0e0e0' : 'white' }}
-            >
-              <td>{seq.Id}</td>
-              <td>{seq.CycleId}</td>
-              <td>{seq.TypeId}</td>
-              <td>{seq.SeqName}</td>
-              <td>{seq.SeqNr}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <TableWithSlider
+        data={sequences}
+        columns={columns}
+        height="40vh"  // hauteur du tableau (40% de la fenêtre)
+        width="50vw"   // largeur du tableau (80% de la fenêtre)
+        visibleCount={5}
+        onSelect={(seq) => setSelectedSequence(seq)}
+      />
 
       {selectedSequence && (
         <div style={{ marginTop: '20px' }}>

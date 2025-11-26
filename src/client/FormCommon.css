@@ -1,0 +1,59 @@
+/* Conteneur général des formulaires */
+
+/* Titre */
+.common-form h3 {
+  font-size: 1.2rem;
+  margin-bottom: 1vh;
+  color: #333;
+}
+
+/* Champs */
+.common-form input {
+  padding: 0.6rem 0.8rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 0.95rem;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.common-form select {
+  padding: 0.6rem 0.8rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 0.95rem;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.common-form select::placeholder{
+    padding: 0.6rem 0.8rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 0.95rem;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.common-form select:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 0 2px rgba(0,123,255,0.2);
+  outline: none;
+}
+.common-form input:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 0 2px rgba(0,123,255,0.2);
+  outline: none;
+}
+
+/* Bouton */
+.common-form button {
+  padding: 0.6rem 1rem;
+  margin-top: 0.8rem;
+  background-color: #007bff;
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 500;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.common-form button:hover {
+  background-color: #0056b3;
+}

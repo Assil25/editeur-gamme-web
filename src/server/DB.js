@@ -3,6 +3,7 @@ const sql = require('mssql/msnodesqlv8'); // driver MS Nodesqlv8
 const config = {
   server: '(localdb)\\MSSQLLocalDB', 
   database: 'ENG100',
+  driver : 'SQL Server',
   options: {
     trustedConnection: true
   }

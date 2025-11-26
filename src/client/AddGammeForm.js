@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-
+import './FormCommon.css';
 function AddGammeForm({ onGammeAdded }) {
   const [ManufactRoutingCode, setManufactRoutingCode] = useState('');
   const [ManufactRoutingVersion, setManufactRoutingVersion] = useState('');
@@ -32,7 +32,7 @@ function AddGammeForm({ onGammeAdded }) {
   };
 
   return (
-    <form onSubmit={handleSubmit} style={{ margin: '20px 0' }}>
+    <form onSubmit={handleSubmit} className="common-form">
       <h3>➕ Ajouter une gamme</h3>
       <input
         type="text"

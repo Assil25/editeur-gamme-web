@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-
+import './FormCommon.css';
 function AddOperationForm({ gammeId, onOperationAdded }) {
   const [opManufacturingRoutingCode, setopManufacturingRoutingCode] = useState('');
   const [opManufacturingRoutingVersion, setopManufacturingRoutingVersion] = useState('');
@@ -42,7 +42,7 @@ function AddOperationForm({ gammeId, onOperationAdded }) {
   };
 
   return (
-    <form onSubmit={handleSubmit} style={{ marginBottom: '20px' }}>
+    <form onSubmit={handleSubmit} className="common-form">
       <h3>➕ Ajouter une opération</h3>
         <input
         type="number"

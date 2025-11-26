@@ -8,13 +8,17 @@ function GestionOperation({ gammeId, onSelectOperation }) {
   if (!gammeId) return null;
 
   return (
-    <div>
+    <div style={{ display: 'flex',flexDirection : 'column' }}>
+       <div style={{ flex: 1 }}>
       <AddOperationForm gammeId={gammeId} onOperationAdded={() => setRefresh(prev => !prev)} />
+       </div>
+       <div style={{ flex: 1 }}>
       <OperationList
         key={refresh}
         gammeId={gammeId}
         onSelectOperation={onSelectOperation}
       />
+       </div>
     </div>
   );
 }
