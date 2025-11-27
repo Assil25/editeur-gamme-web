@@ -33,7 +33,7 @@ function AddGammeForm({ onGammeAdded }) {
 
   return (
     <form onSubmit={handleSubmit} className="common-form">
-      <h3>➕ Ajouter une gamme</h3>
+      {/* <h3>➕ Ajouter une gamme</h3> */}
       <input
         type="text"
         placeholder="ManufactRoutingCode"
@@ -47,6 +47,7 @@ function AddGammeForm({ onGammeAdded }) {
         value={ManufactRoutingVersion}
         onChange={(e) => setManufactRoutingVersion(e.target.value)}
       />
+      {/* <div style={{ height: "0vh"}}></div>  */}
       <input
         type="text"
         placeholder="PartReference"
@@ -60,7 +61,9 @@ function AddGammeForm({ onGammeAdded }) {
         value={PartDescription}
         onChange={(e) => setPartDescription(e.target.value)}
       />
-      <button type="submit">Ajouter</button>
+      
+      <button type="submit">➕ Ajouter une gamme</button>
+      <div style={{ height: "1vh"}}></div> 
     </form>
   );
 }

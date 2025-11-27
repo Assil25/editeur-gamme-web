@@ -48,7 +48,7 @@ function AddSequenceForm({ CycleId, onSequenceAdd }) {
 
   return (
     <form onSubmit={handleSubmit} className="common-form">
-      <h3>➕ Ajouter une séquence</h3>
+      {/* <h3>➕ Ajouter une séquence</h3> */}
         
       <select
         value={TypeId}
@@ -77,7 +77,9 @@ function AddSequenceForm({ CycleId, onSequenceAdd }) {
         onChange={(e) => setSeqNr(e.target.value)}
         required
       />
-      <button type="submit">Ajouter</button>
+      
+      <button type="submit">➕ Ajouter une séquence</button>
+      <div style={{ height: "1vh"}}></div> 
     </form>
   );
 }

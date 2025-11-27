@@ -43,7 +43,7 @@ function AddOperationForm({ gammeId, onOperationAdded }) {
 
   return (
     <form onSubmit={handleSubmit} className="common-form">
-      <h3>➕ Ajouter une opération</h3>
+      {/* <h3>➕ Ajouter une opération</h3> */}
         <input
         type="number"
         placeholder="position"
@@ -65,6 +65,7 @@ function AddOperationForm({ gammeId, onOperationAdded }) {
         onChange={(e) => setopManufacturingRoutingCode(e.target.value)}
         required
       />
+      
       <input
         type="number"
         placeholder="opManufacturingRoutingVersion"
@@ -78,8 +79,11 @@ function AddOperationForm({ gammeId, onOperationAdded }) {
         value={WorkstationId}
         onChange={(e) => setWorkstationId(e.target.value)}
       />
-      <button type="submit">Ajouter</button>
+      
+      <button type="submit">➕ Ajouter une opération</button>
+      <div style={{ height: "1vh"}}></div> 
     </form>
+    
   );
 }
 

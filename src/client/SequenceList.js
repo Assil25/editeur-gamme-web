@@ -25,18 +25,18 @@ function SequenceList({ operationId }) {
 
   return (
     <div>
-      <h2>Séquences</h2>
+      
       <TableWithSlider
         data={sequences}
         columns={columns}
-        height="40vh"  // hauteur du tableau (40% de la fenêtre)
-        width="50vw"   // largeur du tableau (80% de la fenêtre)
+        height="30vh"  // hauteur du tableau (40% de la fenêtre)s
+        width="100%"   // largeur du tableau (80% de la fenêtre)
         visibleCount={5}
         onSelect={(seq) => setSelectedSequence(seq)}
       />
 
       {selectedSequence && (
-        <div style={{ marginTop: '20px' }}>
+        <div style={{ marginTop: '5px' }}>
           <h3>Paramètres de la séquence "{selectedSequence.SeqName}"</h3>
           <SequenceParametresList
             sequenceId={selectedSequence.Id}

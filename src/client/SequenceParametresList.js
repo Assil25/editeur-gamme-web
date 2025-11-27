@@ -1,28 +1,27 @@
 import React, { useState, useEffect } from 'react';
+import './TableWithSlider/TableWithSlider.css'; // ton style existant
 
-// Props : sequenceId et typeId
 function SequenceParametresList({ sequenceId, typeId }) {
   const [params, setParams] = useState([]);
 
   useEffect(() => {
     if (!sequenceId || !typeId) return;
 
-    // Déterminer la table correspondant au TypeId
     let tableName;
     switch (typeId) {
-      case 1: tableName = 'ParametresComposant'; break;        // Scan Component
-      case 2: tableName = 'ParametresCtrlTemperature'; break; // EnvironmentalCondition
-      case 3: tableName = 'ParamatresVissage'; break;        // Screwing
-      case 4: tableName = 'ParametresPrisedeVue'; break;      // PictureCapture
-      case 5: tableName = 'ParamatresPresse'; break;          // Pressing
-      case 6: tableName = 'ParametresPrint'; break;           // Print
-      case 7: tableName = 'ParametresConsommationEnergie'; break; // EnergyConsumption
-      case 8: tableName = 'ParametresRivetage'; break;        // Riveting
-      case 9: tableName = 'ParametresToolIdentification'; break; // ToolIdentification
-      case 10: tableName = 'ParametresPicking'; break;        // Picking Operator
-      case 11: tableName = 'ParametresInstruction'; break;    // Instruction
-      case 12: tableName = 'ParametresMoveRobot'; break;      // Move Robot
-      case 13: tableName = 'ParametresChauffe'; break;       // Heating
+      case 1: tableName = 'ParametresComposant'; break;
+      case 2: tableName = 'ParametresCtrlTemperature'; break;
+      case 3: tableName = 'ParamatresVissage'; break;
+      case 4: tableName = 'ParametresPrisedeVue'; break;
+      case 5: tableName = 'ParamatresPresse'; break;
+      case 6: tableName = 'ParametresPrint'; break;
+      case 7: tableName = 'ParametresConsommationEnergie'; break;
+      case 8: tableName = 'ParametresRivetage'; break;
+      case 9: tableName = 'ParametresToolIdentification'; break;
+      case 10: tableName = 'ParametresPicking'; break;
+      case 11: tableName = 'ParametresInstruction'; break;
+      case 12: tableName = 'ParametresMoveRobot'; break;
+      case 13: tableName = 'ParametresChauffe'; break;
       default: tableName = null;
     }
 
@@ -34,12 +33,12 @@ function SequenceParametresList({ sequenceId, typeId }) {
       .catch(err => console.error(err));
   }, [sequenceId, typeId]);
 
-    if (!params || params.length === 0) return <p>Aucun paramètre pour cette séquence.</p>;
+  if (!params || params.length === 0) 
+    return <p>Aucun paramètre pour cette séquence.</p>;
 
   return (
-    <div style={{ marginTop: '10px' }}>
-      <h3>Paramètres de la séquence</h3>
-      <table border="1" cellPadding="5" style={{ width: '100%' }}>
+    <div className="table-container" style={{ height: '7vh', overflow: 'auto', marginTop: '10px' }}>
+      <table>
         <thead>
           <tr>
             {Object.keys(params[0]).map(col => <th key={col}>{col}</th>)}

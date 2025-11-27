@@ -14,6 +14,11 @@
   border-radius: 5px;
   font-size: 0.95rem;
   transition: border-color 0.2s, box-shadow 0.2s;
+  width: 70px;/*rend la largeur disponible moins padding */
+  max-width: 400px;             /* largeur max pour grands écrans */
+  min-width: 150px;             /* largeur minimale pour petits écrans */
+  height: 35px;
+  box-sizing: border-box;
 }
 .common-form select {
   padding: 0.6rem 0.8rem;
@@ -22,13 +27,7 @@
   font-size: 0.95rem;
   transition: border-color 0.2s, box-shadow 0.2s;
 }
-.common-form select::placeholder{
-    padding: 0.6rem 0.8rem;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  font-size: 0.95rem;
-  transition: border-color 0.2s, box-shadow 0.2s;
-}
+
 .common-form select:focus {
   border-color: #007bff;
   box-shadow: 0 0 0 2px rgba(0,123,255,0.2);

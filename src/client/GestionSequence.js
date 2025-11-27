@@ -8,13 +8,17 @@ function GestionSequence({ operationId, onSelectSequence }) {
   if (!operationId) return null;
 
   return (
-    <div>
+    <div style={{ display: 'flex',flexDirection : 'column' }}>
+      <h2 style={{marginBottom :"0vh"}}>Séquences</h2>
+      <div style={{ flex: 1 }}>
       <AddSequenceForm CycleId={operationId} onSequenceAdd={() => setRefresh(prev => !prev)} />
+      </div>
+      <div style={{ flex: 1 }}>
       <SequenceList 
         key={refresh}
         operationId={operationId} 
         onSelectOperation={onSelectSequence} />
-      
+      </div>
     </div>
   );
 }

@@ -9,6 +9,7 @@ function GestionOperation({ gammeId, onSelectOperation }) {
 
   return (
     <div style={{ display: 'flex',flexDirection : 'column' }}>
+      <h2 style={{marginBottom :"0vh"}}>Opérations</h2>
        <div style={{ flex: 1 }}>
       <AddOperationForm gammeId={gammeId} onOperationAdded={() => setRefresh(prev => !prev)} />
        </div>
