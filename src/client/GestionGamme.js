@@ -8,11 +8,11 @@ function GestionGamme({ onSelectGamme }) {
   return (
     <div style={{ display: 'flex',flexDirection : 'column' }}>
       <h2 style={{marginBottom :"0vh"}}>Gammes</h2>
-      <div style={{ flex: 1 }}>
+      <div >
       <AddGammeForm onGammeAdded={() => setRefresh(prev => !prev)} />
          {/* <div style={{ height: "2vh"}}></div>  */}
       </div>
-      <div style={{ flex: 1 }}>
+      <div>
       <GammeList
         key={refresh} // pour forcer le re-render
         onSelectGamme={onSelectGamme}/>

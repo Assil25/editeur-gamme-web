@@ -5,8 +5,8 @@
   border: 1px solid #ccc;
   border-radius: 8px;
   overflow: hidden;
-  width: 100%;
-  height: 100%; /* ou hauteur fixe */
+  /* width: 100%;
+  height: 100%;  */
   display: flex;
   
   flex-direction: column;
@@ -42,11 +42,25 @@
   transition: background-color 0.3s;
 }
 
-.table-container th,
+.table-container th{
+    padding: 10px;
+  text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  border: 0px solid #d2d2d2;
+}
 .table-container td {
   padding: 10px;
   text-align: left;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+    /* Bordures verticales uniquement */
+  border-left: 0.5px solid #f5f3f3;
+  border-right: 0.5px solid #f5f3f3;
+
+  /* Aucune bordure horizontale */
+  border-top: none;
+  border-bottom: none;
 }

@@ -7,5 +7,7 @@ router.get('/ParametresMoveRobot/:id', paramController.getMoveRobotParam);
 
 // Exemple pour PriseDeVue
 router.get('/ParametresPrisedeVue/:id', paramController.getPriseDeVueParam);
+router.get('/params/structure/:typeId', paramController.getParamStructure);
+router.post('/ParamSequence/:sequenceId', paramController.addSequenceParams);
 
 module.exports = router;

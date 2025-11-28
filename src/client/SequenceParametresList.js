@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import './TableWithSlider/TableWithSlider.css'; // ton style existant
+import './TableWithSlider/TableWithSlider.css';
+import SequenceParamsDynamicForm from './SequenceParamsDynamicForm'; // ton formulaire dynamique
 
 function SequenceParametresList({ sequenceId, typeId }) {
   const [params, setParams] = useState([]);
@@ -33,8 +34,21 @@ function SequenceParametresList({ sequenceId, typeId }) {
       .catch(err => console.error(err));
   }, [sequenceId, typeId]);
 
-  if (!params || params.length === 0) 
-    return <p>Aucun paramètre pour cette séquence.</p>;
+  // Si aucun paramètre, afficher le formulaire dynamique
+  if (!params || params.length === 0) {
+    return (
+      <SequenceParamsDynamicForm
+        sequenceId={sequenceId}
+        typeId={typeId}
+        onSaved={() => {
+          // re-fetch les paramètres après sauvegarde
+          fetch(`http://localhost:8081/api/${tableName}/${sequenceId}`)
+            .then(res => res.json())
+            .then(data => setParams(data));
+        }}
+      />
+    );
+  }
 
   return (
     <div className="table-container" style={{ height: '7vh', overflow: 'auto', marginTop: '10px' }}>

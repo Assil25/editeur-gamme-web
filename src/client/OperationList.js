@@ -23,12 +23,12 @@ function OperationList({ gammeId, onSelectOperation }) {
   ];
 
   return (
-    <div style={{ display: 'flex', justifyContent: 'flex-start' }}>
+    <div>
       
       <TableWithSlider 
         data={operations} 
         columns={columns} 
-        height="30vh"  // hauteur du tableau (40% de la fenêtre)
+        // height="30vh"  // hauteur du tableau (40% de la fenêtre)
         width="100%"   // largeur du tableau (80% de la fenêtre)
         visibleCount={5} 
         onSelect={(op) => onSelectOperation(op.CycleId)}

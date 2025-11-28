@@ -10,10 +10,10 @@ function GestionSequence({ operationId, onSelectSequence }) {
   return (
     <div style={{ display: 'flex',flexDirection : 'column' }}>
       <h2 style={{marginBottom :"0vh"}}>Séquences</h2>
-      <div style={{ flex: 1 }}>
+      <div>
       <AddSequenceForm CycleId={operationId} onSequenceAdd={() => setRefresh(prev => !prev)} />
       </div>
-      <div style={{ flex: 1 }}>
+      <div>
       <SequenceList 
         key={refresh}
         operationId={operationId} 

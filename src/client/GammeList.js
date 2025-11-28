@@ -24,7 +24,7 @@ function GammeList({ onSelectGamme }) {
       <TableWithSlider
         data={gammes}
         columns={columns}
-        height="30vh"  // hauteur du tableau (40% de la fenêtre)
+        // height="30vh"  // hauteur du tableau (40% de la fenêtre)
         width="100%"   // largeur du tableau (80% de la fenêtre)
         onSelect={(g) => onSelectGamme(g.Id)}
       />

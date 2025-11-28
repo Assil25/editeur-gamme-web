@@ -29,7 +29,7 @@ function SequenceList({ operationId }) {
       <TableWithSlider
         data={sequences}
         columns={columns}
-        height="30vh"  // hauteur du tableau (40% de la fenêtre)s
+        // height="30vh"  // hauteur du tableau (40% de la fenêtre)s
         width="100%"   // largeur du tableau (80% de la fenêtre)
         visibleCount={5}
         onSelect={(seq) => setSelectedSequence(seq)}
