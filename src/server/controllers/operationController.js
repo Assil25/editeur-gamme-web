@@ -89,37 +89,64 @@ res.status(201).json({ message: 'Opération créée avec succès', IdCycle })
 };
 
 // 🔹 Mettre à jour une opération
+// 🔹 Mettre à jour une opération
 exports.updateOperation = async (req, res) => {
   try {
-    const { id } = req.params;
-    const { nom, description } = req.body;
+    const { id } = req.params; // CycleId
+    const {
+      Position,
+      NumOP,
+      WorkstationId,
+      opManufacturingRoutingCode,
+      opManufacturingRoutingVersion
+    } = req.body;
+
+    if (!Position || !NumOP || !WorkstationId || !opManufacturingRoutingCode || !opManufacturingRoutingVersion ) {
+      return res.status(400).json({ error: 'Tous les champs sont obligatoires' });
+    }
 
     const pool = await poolPromise;
-    await pool.request()
-      .input('id', id)
-      .input('nom', nom)
-      .input('description', description || null)
-      .query('UPDATE OP SET Nom = @nom, Description = @description WHERE Id = @id');
+
+    // 1️⃣ Mettre à jour le cycle
+   await pool.request()
+  .input('CycleId', id)
+  .input('opManufacturingRoutingCode', opManufacturingRoutingCode)
+  .input('opManufacturingRoutingVersion', opManufacturingRoutingVersion)
+  .input('Position', Position)
+  .input('NumOP', NumOP)
+  .input('WorkstationId', WorkstationId)
+  .query(`
+    UPDATE Cycle
+    SET opManufacturingRoutingCode = @opManufacturingRoutingCode,
+        opManufacturingRoutingVersion = @opManufacturingRoutingVersion
+    WHERE Id = @CycleId;
+    
+    UPDATE OP
+    SET Position = @Position,
+        NumOP = @NumOP,
+        WorkstationId = @WorkstationId
+    WHERE CycleId = @CycleId;
+  `);
+
+    // 2️⃣ Mettre à jour l’opération dans OP
+    // await pool.request()
+    //   .input('CycleId', id)
+    //   .input('Position', Position)
+    //   .input('NumOP', NumOP)
+    //   .input('WorkstationId', WorkstationId)
+    //   .query(`
+    //     UPDATE OP
+    //     SET Position = @Position,
+    //         NumOP = @NumOP,
+    //         WorkstationId = @WorkstationId,
+    //     WHERE CycleId = @CycleId
+    //   `);
 
     res.json({ message: 'Opération mise à jour avec succès' });
+
   } catch (err) {
     console.error('Erreur lors de la mise à jour de l’opération :', err);
     res.status(500).json({ error: 'Erreur serveur' });
   }
 };
 
-// 🔹 Supprimer une opération
-exports.deleteOperation = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const pool = await poolPromise;
-    await pool.request()
-      .input('id', id)
-      .query('DELETE FROM OP WHERE Id = @id');
-
-    res.json({ message: 'Opération supprimée avec succès' });
-  } catch (err) {
-    console.error('Erreur lors de la suppression de l’opération :', err);
-    res.status(500).json({ error: 'Erreur serveur' });
-  }
-};

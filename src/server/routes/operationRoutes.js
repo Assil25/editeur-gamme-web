@@ -15,6 +15,6 @@ router.post('/', operationController.createOperation);
 router.put('/:id', operationController.updateOperation);
 
 // Supprimer une opération
-router.delete('/:id', operationController.deleteOperation);
+// router.delete('/:id', operationController.deleteOperation);
 
 module.exports = router;

@@ -70,19 +70,30 @@ exports.getAllTypeSequences = async (req, res) => {
 exports.updateSequence = async (req, res) => {
   try {
     const { id } = req.params;
-    const { nom, description } = req.body;
+    const { TypeId,SeqName, SeqNr} = req.body;
+
+    if (!TypeId || !SeqName || !SeqNr) {
+      return res.status(400).send('Tous les champs sont obligatoires');
+    }
 
     const pool = await poolPromise;
     await pool.request()
-      .input('id', id)
-      .input('nom', nom)
-      .input('description', description || null)
-      .query('UPDATE Seq SET Nom = @nom, Description = @description WHERE Id = @id');
+      .input('Id', id)
+      .input('TypeId', TypeId)
+      .input('SeqName', SeqName)
+      .input('SeqNr', SeqNr)
+      .query(`
+        UPDATE Seq
+        SET TypeId = @TypeId,
+            SeqName = @SeqName,
+            SeqNr = @SeqNr
+        WHERE Id = @Id
+      `);
 
-    res.json({ message: 'Séquence mise à jour avec succès' });
+    res.send('Sequence mise à jour avec succès');
   } catch (err) {
-    console.error('Erreur lors de la mise à jour de la séquence :', err);
-    res.status(500).json({ error: 'Erreur serveur' });
+    console.error(err);
+    // res.status(500).send(err.message);
   }
 };
 
@@ -97,8 +108,7 @@ exports.deleteSequence = async (req, res) => {
 
     res.json({ message: 'Séquence supprimée avec succès' });
   } catch (err) {
-    console.error('Erreur lors de la suppression de la séquence :', err);
-    res.status(500).json({ error: 'Erreur serveur' });
+    console.error('Erreur lors de la modification de la séquence :', err);
   }
 };
 

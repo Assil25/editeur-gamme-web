@@ -6,13 +6,22 @@ function SequenceList({ operationId }) {
   const [sequences, setSequences] = useState([]);
   const [selectedSequence, setSelectedSequence] = useState(null);
 
-  useEffect(() => {
+  // ✔ Correction 1 : fonction correctement fermée
+  const fetchSequences = async () => {
     if (!operationId) return;
 
-    fetch(`http://localhost:8081/api/sequences/operation/${operationId}`)
-      .then(res => res.json())
-      .then(data => setSequences(data))
-      .catch(err => console.error(err));
+    try {
+      const res = await fetch(`http://localhost:8081/api/sequences/operation/${operationId}`);
+      const data = await res.json();
+      setSequences(data);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  // ✔ Correction 2 : useEffect correctement placé et syntaxe OK
+  useEffect(() => {
+    fetchSequences();
   }, [operationId]);
 
   const columns = [
@@ -23,16 +32,42 @@ function SequenceList({ operationId }) {
     { key: 'SeqNr', label: 'SeqNr' },
   ];
 
+  const updateSequence = async (row) => {
+    try {
+      const res = await fetch(`http://localhost:8081/api/sequences/${row.Id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          TypeId: row.TypeId,
+          SeqName: row.SeqName,
+          SeqNr: row.SeqNr,
+        }),
+      });
+
+      if (res.ok) {
+        alert('Sequence mise à jour avec succès');
+        fetchSequences();
+      } else {
+        const err = await res.text();
+        console.error('Erreur update:', err);
+        alert('Erreur lors de la mise à jour');
+      }
+    } catch (err) {
+      console.error('Erreur serveur:', err);
+      alert('Erreur serveur');
+    }
+  };
+
   return (
     <div>
-      
       <TableWithSlider
         data={sequences}
         columns={columns}
-        // height="30vh"  // hauteur du tableau (40% de la fenêtre)s
-        width="100%"   // largeur du tableau (80% de la fenêtre)
-        visibleCount={5}
+        width="100%"
+        getRowId={(row) => row.Id}
         onSelect={(seq) => setSelectedSequence(seq)}
+        onSaveRow={updateSequence}
+        // onDeleteRow={deleteSequence} 
       />
 
       {selectedSequence && (

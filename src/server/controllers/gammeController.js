@@ -18,8 +18,8 @@ exports.getGammeById = async (req, res) => {
     const { id } = req.params;
     const pool = await poolPromise;
     const result = await pool.request()
-      .input('id', id)
-      .query('SELECT * FROM Reference WHERE id = @id');
+      .input('Id', id)
+      .query('SELECT * FROM Reference WHERE Id = @Id');
     res.json(result.recordset[0]);
   } catch (err) {
     console.error(err);
@@ -56,16 +56,30 @@ exports.createGamme = async (req, res) => {
 
 
 // Mettre à jour une gamme
+// Mettre à jour une gamme
 exports.updateGamme = async (req, res) => {
   try {
-    const { id } = req.params;
-    const { nom } = req.body;
+    const { Id, ManufactRoutingCode, ManufactRoutingVersion, PartReference, PartDescription } = req.body;
+
+    if (!Id || !ManufactRoutingCode || !ManufactRoutingVersion || !PartReference || !PartDescription) {
+      return res.status(400).send('Tous les champs sont obligatoires');
+    }
 
     const pool = await poolPromise;
     await pool.request()
-      .input('id', id)
-      .input('nom', nom)
-      .query('UPDATE Reference SET nom = @nom WHERE id = @id');
+      .input('Id', Id)
+      .input('ManufactRoutingCode', ManufactRoutingCode)
+      .input('ManufactRoutingVersion', ManufactRoutingVersion)
+      .input('PartReference', PartReference)
+      .input('PartDescription', PartDescription)
+      .query(`
+        UPDATE Reference
+        SET ManufactRoutingCode = @ManufactRoutingCode,
+            ManufactRoutingVersion = @ManufactRoutingVersion,
+            PartReference = @PartReference,
+            PartDescription = @PartDescription
+        WHERE Id = @Id
+      `);
 
     res.send('Gamme mise à jour avec succès');
   } catch (err) {
@@ -74,6 +88,7 @@ exports.updateGamme = async (req, res) => {
   }
 };
 
+
 // Supprimer une gamme
 exports.deleteGamme = async (req, res) => {
   try {
@@ -81,7 +96,7 @@ exports.deleteGamme = async (req, res) => {
     const pool = await poolPromise;
     await pool.request()
       .input('id', id)
-      .query('DELETE FROM Reference WHERE id = @id');
+      .query('DELETE and CASCADE FROM Reference WHERE Id = @Id');
 
     res.send('Gamme supprimée avec succès');
   } catch (err) {
