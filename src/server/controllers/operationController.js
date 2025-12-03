@@ -128,19 +128,6 @@ exports.updateOperation = async (req, res) => {
     WHERE CycleId = @CycleId;
   `);
 
-    // 2️⃣ Mettre à jour l’opération dans OP
-    // await pool.request()
-    //   .input('CycleId', id)
-    //   .input('Position', Position)
-    //   .input('NumOP', NumOP)
-    //   .input('WorkstationId', WorkstationId)
-    //   .query(`
-    //     UPDATE OP
-    //     SET Position = @Position,
-    //         NumOP = @NumOP,
-    //         WorkstationId = @WorkstationId,
-    //     WHERE CycleId = @CycleId
-    //   `);
 
     res.json({ message: 'Opération mise à jour avec succès' });
 

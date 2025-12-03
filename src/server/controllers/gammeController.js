@@ -92,10 +92,10 @@ exports.updateGamme = async (req, res) => {
 // Supprimer une gamme
 exports.deleteGamme = async (req, res) => {
   try {
-    const { id } = req.params;
+    const { Id } = req.params;
     const pool = await poolPromise;
     await pool.request()
-      .input('id', id)
+      .input('Id', Id)
       .query('DELETE and CASCADE FROM Reference WHERE Id = @Id');
 
     res.send('Gamme supprimée avec succès');

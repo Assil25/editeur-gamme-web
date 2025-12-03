@@ -82,11 +82,8 @@ exports.getParamStructure = async (req, res) => {
 
 
 // Ajouter les paramètres d'une séquence
-exports.addSequenceParams = async (req, res) => {
-  // bonne récupération du paramètre d’URL
+exports.updateSequenceParams = async (req, res) => {
   const sequenceId = req.params.sequenceId;
-
-  // le front envoie : { tableName: "...", data: {...} }
   const { tableName, data } = req.body;
 
   if (!tableName || !sequenceId) {
@@ -96,29 +93,32 @@ exports.addSequenceParams = async (req, res) => {
   try {
     const pool = await poolPromise;
 
-    // Construire automatiquement la liste des colonnes
-    const columns = Object.keys(data).join(", ");
-    const params = Object.keys(data).map(col => `@${col}`).join(", ");
+    const setClause = Object.keys(data)
+      .filter(col => col !== "Id" && col !== "SequenceId") // ne pas modifier Id et SequenceId
+      .map(col => `${col} = @${col}`)
+      .join(", ");
 
     const request = pool.request();
 
-    // Ajouter les valeurs en paramètres SQL
-    for (const [col, val] of Object.entries(data)) {
-      request.input(col, val);
-    }
+    // Ajouter toutes les valeurs en paramètres SQL
+    Object.entries(data).forEach(([col, val]) => {
+      if (col !== "Id" && col !== "SequenceId") {
+        request.input(col, val);
+      }
+    });
 
-    // Requête SQL dynamique
-    await request.query(`
-      INSERT INTO ${tableName} (${columns}) 
-      VALUES (${params})
-    `);
+    // Update dynamique
+    await request
+      .input("SequenceId", sequenceId)
+      .query(`UPDATE ${tableName} SET ${setClause} WHERE SequenceId = @SequenceId`);
 
-    res.json({ message: "Paramètres ajoutés avec succès" });
+    res.json({ message: "Paramètres mis à jour avec succès" });
 
   } catch (err) {
-    console.error("Erreur ajout paramètres :", err);
+    console.error("Erreur mise à jour paramètres :", err);
     res.status(500).json({ error: "Erreur serveur" });
   }
 };
+
 
 

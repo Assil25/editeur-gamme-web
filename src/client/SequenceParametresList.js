@@ -1,71 +1,109 @@
 import React, { useState, useEffect } from 'react';
-import './TableWithSlider/TableWithSlider.css';
-import SequenceParamsDynamicForm from './SequenceParamsDynamicForm'; // ton formulaire dynamique
+import TableWithSlider from './TableWithSlider/TableWithSlider';
 
 function SequenceParametresList({ sequenceId, typeId }) {
   const [params, setParams] = useState([]);
+  const [columns, setColumns] = useState([]);
 
-  useEffect(() => {
+  const tableMap = {
+    1: 'ParametresComposant',
+    2: 'ParametresCtrlTemperature',
+    3: 'ParamatresVissage',
+    4: 'ParametresPrisedeVue',
+    5: 'ParamatresPresse',
+    6: 'ParametresPrint',
+    7: 'ParametresConsommationEnergie',
+    8: 'ParametresRivetage',
+    9: 'ParametresToolIdentification',
+    10: 'ParametresPicking',
+    11: 'ParametresInstruction',
+    12: 'ParametresMoveRobot',
+    13: 'ParametresChauffe'
+  };
+
+  const resolvedTableName = tableMap[typeId];
+
+  const fetchData = async () => {
     if (!sequenceId || !typeId) return;
 
-    let tableName;
-    switch (typeId) {
-      case 1: tableName = 'ParametresComposant'; break;
-      case 2: tableName = 'ParametresCtrlTemperature'; break;
-      case 3: tableName = 'ParamatresVissage'; break;
-      case 4: tableName = 'ParametresPrisedeVue'; break;
-      case 5: tableName = 'ParamatresPresse'; break;
-      case 6: tableName = 'ParametresPrint'; break;
-      case 7: tableName = 'ParametresConsommationEnergie'; break;
-      case 8: tableName = 'ParametresRivetage'; break;
-      case 9: tableName = 'ParametresToolIdentification'; break;
-      case 10: tableName = 'ParametresPicking'; break;
-      case 11: tableName = 'ParametresInstruction'; break;
-      case 12: tableName = 'ParametresMoveRobot'; break;
-      case 13: tableName = 'ParametresChauffe'; break;
-      default: tableName = null;
+    try {
+      const res = await fetch(`http://localhost:8081/api/${resolvedTableName}/${sequenceId}`);
+      const data = await res.json();
+
+      if (data.length > 0) {
+        // Colonnes visibles sauf Id et SequenceId
+        const visibleCols = Object.keys(data[0])
+          .filter(c => c !== "Id" && c !== "SequenceId")
+          .map(c => ({ key: c, label: c }));
+
+        setColumns(visibleCols);
+        setParams(data);
+        return;
+      }
+
+      // Table vide → charger structure
+      const resStruct = await fetch(`http://localhost:8081/api/params/structure/${typeId}`);
+      const struct = await resStruct.json();
+
+      const visibleCols = struct.columns
+        .filter(c => c !== "Id" && c !== "SequenceId")
+        .map(c => ({ key: c, label: c }));
+
+      setColumns(visibleCols);
+
+      // Ligne vide avec SequenceId auto assigné
+      const emptyRow = {};
+      struct.columns.forEach(col => {
+        if (col === "SequenceId") emptyRow[col] = sequenceId;
+        else emptyRow[col] = "";
+      });
+
+      setParams([emptyRow]);
+
+    } catch (err) {
+      console.error(err);
     }
+  };
 
-    if (!tableName) return;
-
-    fetch(`http://localhost:8081/api/${tableName}/${sequenceId}`)
-      .then(res => res.json())
-      .then(data => setParams(data))
-      .catch(err => console.error(err));
+  useEffect(() => {
+    fetchData();
   }, [sequenceId, typeId]);
 
-  // Si aucun paramètre, afficher le formulaire dynamique
-  if (!params || params.length === 0) {
-    return (
-      <SequenceParamsDynamicForm
-        sequenceId={sequenceId}
-        typeId={typeId}
-        onSaved={() => {
-          // re-fetch les paramètres après sauvegarde
-          fetch(`http://localhost:8081/api/${tableName}/${sequenceId}`)
-            .then(res => res.json())
-            .then(data => setParams(data));
-        }}
-      />
-    );
+  const saveParams = async (row) => {
+  try {
+    // On n'a plus besoin de vérifier Id, car on fait toujours un update
+    const res = await fetch(`http://localhost:8081/api/params/${sequenceId}`, {
+      method: 'PUT',  // <-- ici on change POST en PUT
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        tableName: resolvedTableName,
+        data: row
+      })
+    });
+
+    if (res.ok) {
+      alert("Paramètres mis à jour !");
+      fetchData(); // recharger les données après update
+    } else {
+      const errText = await res.text();
+      alert("Erreur lors de la mise à jour : " + errText);
+    }
+
+  } catch (err) {
+    console.error(err);
+    alert("Erreur serveur lors de la mise à jour");
   }
+};
 
   return (
-    <div className="table-container" style={{ height: '7vh', overflow: 'auto', marginTop: '10px' }}>
-      <table>
-        <thead>
-          <tr>
-            {Object.keys(params[0]).map(col => <th key={col}>{col}</th>)}
-          </tr>
-        </thead>
-        <tbody>
-          {params.map((row, idx) => (
-            <tr key={idx}>
-              {Object.values(row).map((val, i) => <td key={i}>{val}</td>)}
-            </tr>
-          ))}
-        </tbody>
-      </table>
+    <div style={{ marginTop: "10px" }}>
+      <TableWithSlider
+        data={params}
+        columns={columns} 
+        width="100%"
+        getRowId={(row) => row.Id || "new"}
+        onSaveRow={saveParams}
+      />
     </div>
   );
 }
